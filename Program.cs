@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configuramos la conexión a PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
-    opciones.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    opciones.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL") ?? builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 // Configuración de CORS
