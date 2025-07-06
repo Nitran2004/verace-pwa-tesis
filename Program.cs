@@ -13,8 +13,21 @@ using Npgsql.EntityFrameworkCore.PostgreSQL;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuramos la conexión a PostgreSQL
+// Configurar connection string para Railway
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+if (!string.IsNullOrEmpty(connectionString))
+{
+    // Convertir DATABASE_URL a formato Entity Framework
+    var databaseUri = new Uri(connectionString);
+    connectionString = $"Host={databaseUri.Host};Port={databaseUri.Port};Database={databaseUri.LocalPath.Substring(1)};Username={databaseUri.UserInfo.Split(':')[0]};Password={databaseUri.UserInfo.Split(':')[1]};SSL Mode=Require;Trust Server Certificate=true";
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
-    opciones.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL") ?? builder.Configuration.GetConnectionString("DefaultConnection"))
+    opciones.UseNpgsql(connectionString)
 );
 
 // Configuración de CORS
