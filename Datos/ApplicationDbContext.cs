@@ -177,8 +177,7 @@ namespace ProyectoIdentity.Datos
                 entity.Property(e => e.Puntos).IsRequired();
                 entity.Property(e => e.Tipo).IsRequired().HasMaxLength(20);
                 entity.Property(e => e.Descripcion).HasMaxLength(200);
-                entity.Property(e => e.Fecha).IsRequired().HasDefaultValueSql("GETDATE()");
-
+                entity.Property(e => e.Fecha).IsRequired().HasDefaultValueSql("NOW()");
                 entity.HasOne<AppUsuario>()
                       .WithMany()
                       .HasForeignKey(e => e.UsuarioId)

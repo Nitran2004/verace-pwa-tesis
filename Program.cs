@@ -7,13 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoIdentity.Datos;
 using ProyectoIdentity.Models;
 using ProyectoIdentity.Servicios;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 //using static ProyectoIdentity.Controllers.UsuariosController;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuramos la conexión a SQL Server
+// Configuramos la conexión a PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
-    opciones.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSql"))
+    opciones.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 // Configuración de CORS
